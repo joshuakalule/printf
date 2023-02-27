@@ -14,7 +14,7 @@ int _printf(const char *format, ...)
 	va_start(list, format);
 	for (i = 0; format[i] != '\0'; i++)
 	{
-		if (format[i] == '%')
+		if (format[i] == '%' && !percent)
 		{
 			percent = 1;
 			continue;
@@ -27,18 +27,26 @@ int _printf(const char *format, ...)
 				tmp1 = va_arg(list, int);
 				write(1, &tmp1, 1);
 				count++;
-				continue;
 			}
 			else if (format[i] == 's')
 			{
 				tmp = va_arg(list, char *);
-				for (j = 0; tmp[j] != '\0'; j++)
+				if (!tmp)
 				{
-					write(1, (tmp + j), 1);
-					count++;
+					write(1, "(null)", 6);
+					count += 6;
 				}
-				continue;
+				else
+				{
+					for (j = 0; tmp[j] != '\0'; j++)
+					{
+						write(1, (tmp + j), 1);
+						count++;
+					}
+				}
 			}
+			percent = 0;
+			continue;
 		}
 
 		write(1, (format + i), 1);
