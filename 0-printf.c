@@ -45,7 +45,7 @@ int w_string(va_list list)
 		return (c);
 	}
 
-	for (i = 0; tmp[i] == '\0'; i++)
+	for (i = 0; tmp[i] != '\0'; i++)
 	{
 		write(1, (tmp + i), 1);
 		c++;
