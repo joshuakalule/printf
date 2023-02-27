@@ -57,7 +57,7 @@ int _printf(const char *format, ...)
 			{
 				write(1, "%", 1);
 				write(1, (format + i), 1);
-				count++;
+				count += 2;
 			}
 			percent = 0;
 			continue;
