@@ -5,19 +5,19 @@
 
 int _printf(const char *format, ...)
 {
-	int i, j, count;
+	int i, j, count = 0;
 	char *tmp;
 	int tmp1;
 	int percent = 0;
 	va_list list;
 
 	if (!format)
-		return (0);
+		return (-1);
 
 	va_start(list, format);
 	for (i = 0; format[i] != '\0'; i++)
 	{
-		if (format[i] == '%')
+		if (format[i] == '%' && percent == 0)
 		{
 			percent = 1;
 			continue;
@@ -66,6 +66,8 @@ int _printf(const char *format, ...)
 		count++;
 	}
 	va_end(list);
-
+	
+	if (percent)
+		return (-1);
 	return (count);
 }
