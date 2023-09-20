@@ -16,7 +16,6 @@ void specifier(char *format, int *ci, char *buffer, int *bsize, va_list list,
 	   int *count)
 {
 	char *flags = NULL;
-	char length_modifier[3] = {'\0'};
 	char conversion = '\0';
 	char flag_array[] = FLAG_ARRAY;
 	char length_modifier_array[] = LEN_MODIFIER_ARRAY;
