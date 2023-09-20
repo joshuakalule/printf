@@ -51,6 +51,6 @@ void specifier(char *format, int *ci, char *buffer, int *bsize, va_list list,
 	}
 
 	run_conversion(conversion, buffer, bsize, list, flags, count);
-	printf("flags: [%s], length modifier: [%s], conversion: [%c]\n\n",
-			flags, length_modifier, conversion);
+	/* printf("flags: [%s], length modifier: [%s], conversion: [%c]\n\n",
+			flags, length_modifier, conversion); */
 }
