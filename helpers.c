@@ -1,9 +1,39 @@
 #include "main.h"
 
 /**
+ * __less16 - handle numbers less than 16
+ * @number: number
+ * @hex_strnum: hex string number
+ * @hex_add: value to convert 10, 11, ... into a, b, ... or A, B, ...
+ */
+void __less16(unsigned long number, char *hex_strnum, int hex_add)
+{
+	if (!hex_strnum)
+		exit(1);
+	hex_strnum[1] = '\0';
+	if (number >= 10)
+		hex_strnum[0] = (char)(number + hex_add);
+	else
+		hex_strnum[0] = (char)(number + 48);
+}
+
+/**
+ * _hexadecimal_conversion - helper function for the hex conversion
+ * @hex_add: value to help convert 10 <= numbers <= 15 to letters
+ * @list: va_list arg
+ *
+ * Return: hex string conversion of the number fetched from va_list (list)
+ */
+char *_hexadecimal_conversion(int hex_add, va_list list)
+{
+	unsigned int number = va_arg(list, unsigned int);
+
+	return (__hex_body(hex_add, number));
+}
+
+/**
  * __hex_body - helper method to handle hex conversion
- * @buffer: buffer
- * @bsize: pointer to the current buffer size
+ * @hex_add: value to convert 10, 11, ... into a, b, ... or A, B, ...
  * @number: number to convert to hex
  *
  * Return: hex string translation of number
@@ -16,16 +46,9 @@ char *__hex_body(int hex_add, unsigned int number)
 	if (number < 16)
 	{
 		hex_strnum = malloc(2);
-		if (!hex_strnum)
-			exit(1);
-		hex_strnum[1] = '\0';
-		if (number >= 10)
-			hex_strnum[0] = number + hex_add;
-		else
-			hex_strnum[0] = number + 48;
+		__less16((unsigned long)number, hex_strnum, hex_add);
 		return (hex_strnum);
 	}
-
 	count = 1;
 	num = number;
 	while (1)
@@ -35,7 +58,6 @@ char *__hex_body(int hex_add, unsigned int number)
 		if (num < 16)
 			break;
 	}
-	
 	hex_strnum = malloc(sizeof(char) * (count + 1));
 	if (!hex_strnum)
 		exit(1);
@@ -45,17 +67,11 @@ char *__hex_body(int hex_add, unsigned int number)
 	{
 		if (num < 16)
 		{
-			if (num >= 10)
-				hex_strnum[i] = num + hex_add;
-			else
-				hex_strnum[i] = num + 48;
+		hex_strnum[i] = (num >= 10) ? num + hex_add : num + 48;
 		}
 		else
 		{
-			if ((num % 16) >= 10)
-				hex_strnum[i] = (num % 16) + hex_add;
-			else
-				hex_strnum[i] = (num % 16) + 48;
+		hex_strnum[i] = ((num % 16) >= 10) ? (num % 16) + hex_add : (num % 16) + 48;
 		}
 		num /= 16;
 	}
@@ -63,48 +79,22 @@ char *__hex_body(int hex_add, unsigned int number)
 }
 
 /**
- * _hexadecimal_conversion - helper function for the hex conversion
- * @hex_add - value to help convert 10 <= numbers <= 15 to letters
- * @buffer: buffer
- * @bsize: pointer to the current buffer size
- * @list: va_list argument
+ * __hex_body_ld - hanlde unsigned decimal conversion
+ * @hex_add: value to help convert 10 <= numbers <= 15 to letters
+ * @number: number to convert to hex
  *
  * Return: hex string conversion of the number fetched from va_list (list)
  */
-char *_hexadecimal_conversion(int hex_add, va_list list)
+char *__hex_body_ld(int hex_add, unsigned long number)
 {
-	unsigned int number = va_arg(list, unsigned int);
-
-	return (__hex_body(hex_add, number));
-}
-
-/**
- * __hex_body_ld - helper function for the hex conversion to hanlde unsigned decimals
- * @hex_add - value to help convert 10 <= numbers <= 15 to letters
- * @buffer: buffer
- * @bsize: pointer to the current buffer size
- * @list: va_list argument
- *
- * Return: hex string conversion of the number fetched from va_list (list)
- */
-char *__hex_body_ld(int hex_add, long unsigned number)
-{
-	long unsigned i, num ,count;
-	char *hex_strnum;
+	unsigned long i, num, count;
+	char *hex_strnum = NULL;
 
 	if (number < 16)
 	{
-		hex_strnum = malloc(2);
-		if (!hex_strnum)
-			exit(1);
-		hex_strnum[1] = '\0';
-		if (number >= 10)
-			hex_strnum[0] = number + hex_add;
-		else
-			hex_strnum[0] = number + 48;
+		__less16(number, hex_strnum, hex_add);
 		return (hex_strnum);
 	}
-
 	count = 1;
 	num = number;
 	while (1)
@@ -114,7 +104,6 @@ char *__hex_body_ld(int hex_add, long unsigned number)
 		if (num < 16)
 			break;
 	}
-	
 	hex_strnum = malloc(sizeof(char) * (count + 1));
 	if (!hex_strnum)
 		exit(1);
@@ -124,17 +113,11 @@ char *__hex_body_ld(int hex_add, long unsigned number)
 	{
 		if (num < 16)
 		{
-			if (num >= 10)
-				hex_strnum[i] = num + hex_add;
-			else
-				hex_strnum[i] = num + 48;
+		hex_strnum[i] = (num >= 10) ? (num + hex_add) : (num + 48);
 		}
 		else
 		{
-			if ((num % 16) >= 10)
-				hex_strnum[i] = (num % 16) + hex_add;
-			else
-				hex_strnum[i] = (num % 16) + 48;
+		hex_strnum[i] = (num % 16 >= 10) ? (num % 16) + hex_add : (num % 16) + 48;
 		}
 		num /= 16;
 	}

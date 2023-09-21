@@ -9,7 +9,7 @@
  */
 int main(void)
 {
-	_printf("%s[%d] is %b %%\n", "binary", 347, 347);
+	_printf("%K\n");
 
 	return (0);
 }

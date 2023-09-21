@@ -12,54 +12,27 @@
 void run_conversion(char ch, char *buffer, int *bsize, va_list list,
 		char *flags, int *count)
 {
-	if (ch == 'c')
+	int i;
+
+	conversion_t conversions[] = {
+		{'c', character_conversion},
+		{'s', string_conversion},
+		{'%', percent_conversion},
+		{'d', decimal_conversion},
+		{'i', decimal_conversion},
+		{'b', binary_conversion},
+		{'u', unsigned_decimal_conversion},
+		{'o', octal_conversion},
+		{'x', hexadecimal_lower_conversion},
+		{'X', hexadecimal_upper_conversion},
+		{'S', custom_string_conversion},
+		{'p', pointer_conversion},
+		{'\0', NULL}
+	};
+
+	for (i = 0; conversions[i].ch != '\0'; i++)
 	{
-		character_conversion(buffer, bsize, list, count);
-	}
-	else if (ch == 's')
-	{
-		string_conversion(buffer, bsize, list, count);
-	}
-	else if (ch == '%')
-	{
-		append_char('%', buffer, bsize, count);
-	}
-	else if (ch == 'd')
-	{
-		/* interpreted as signed decimal integers */
-		decimal_conversion(buffer, bsize, list, flags, count);
-	}
-	else if (ch == 'i')
-	{
-		/* intepreted as specified base, default = base10 */
-		decimal_conversion(buffer, bsize, list, flags, count);
-	}
-	else if (ch == 'b')
-	{
-		binary_conversion(buffer, bsize, list, count);
-	}
-	else if (ch == 'u')
-	{
-		unsigned_decimal_conversion(buffer, bsize, list, count);
-	}
-	else if (ch == 'o')
-	{
-		octal_conversion(buffer, bsize, list, count);
-	}
-	else if (ch == 'x')
-	{
-		hexadecimal_lower_conversion(buffer, bsize, list, count);
-	}
-	else if (ch == 'X')
-	{
-		hexadecimal_upper_conversion(buffer, bsize, list, count);
-	}
-	else if (ch == 'S')
-	{
-		custom_string_conversion(buffer, bsize, list, count);
-	}
-	else if (ch == 'p')
-	{
-		pointer_conversion(buffer, bsize, list, count);
+		if (ch == conversions[i].ch)
+			conversions[i].f(buffer, bsize, list, flags, count);
 	}
 }

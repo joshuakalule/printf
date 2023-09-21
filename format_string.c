@@ -1,4 +1,32 @@
 #include "main.h"
+
+/**
+ * handle_no_conversion - handles case when no conversion specifier is given
+ * @ch: conversion char
+ * @format: format string
+ * @ci: pointer to the current index in format string
+ * @buffer: buffer
+ * @bsize: pointer to the buffer size
+ * @count: pointer to the number of characters printed onto stdout
+ * @status: array of return messages
+ */
+void handle_no_conversion(char ch, char *format, int *ci, char *buffer,
+		int *bsize,	int *count, char *status)
+{
+	if (ch != '\0')
+		return;
+
+	if (format[*ci] != '\0' || *count != 0)
+	{
+		append_char('%', buffer, bsize, count);
+		append_char(format[*ci], buffer, bsize, count);
+		return;
+	}
+	status[0] = '0';
+	(*ci)--;
+}
+
+
 /**
  * specifier - handle the '%' format specifier and all its elements
  * @format: pointer to the format string
@@ -7,21 +35,21 @@
  * @bsize: pointer to the current buffer size
  * @list: va_list argument
  * @count: pointer to the number of chars printed onto stdout
+ * @status: array of return messages
  *
  * Description:
  * Based on the syntax for conversion specification 'man 3 printf'
  * %[flag][width][.precision][length modifier]conversion
  */
 void specifier(char *format, int *ci, char *buffer, int *bsize, va_list list,
-	   int *count)
+	   int *count, char *status)
 {
-	char *flags = NULL;
-	char conversion = '\0';
-	char flag_array[] = FLAG_ARRAY;
+	char *flags = NULL, conversion = '\0', flag_array[] = FLAG_ARRAY;
 	char length_modifier_array[] = LEN_MODIFIER_ARRAY;
 	char conversion_array[] = CONVERSION_ARRAY;
 	int i;
 
+	(*ci)++;
 	/* flags */
 	for (i = 0; i < FLAG_ARRAY_SIZE; i++)
 	{
@@ -48,8 +76,10 @@ void specifier(char *format, int *ci, char *buffer, int *bsize, va_list list,
 			conversion = format[*ci];
 		}
 	}
-
+	handle_no_conversion(conversion, format, ci, buffer, bsize, count, status);
 	run_conversion(conversion, buffer, bsize, list, flags, count);
-	/* printf("flags: [%s], length modifier: [%s], conversion: [%c]\n\n",
-			flags, length_modifier, conversion); */
+	/**
+	 * printf("flags: [%s], length modifier: [%s], conversion: [%c]\n\n",
+	 *		flags, length_modifier, conversion);
+	 */
 }

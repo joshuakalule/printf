@@ -8,10 +8,8 @@
  */
 int _printf(const char *format, ...)
 {
-	int i = 0;
-	int chars_printed = 0;
-	char buffer[BUFSIZE] = {'\0'};
-	int bsize = 0;
+	int i = 0, chars_printed = 0, bsize = 0;
+	char buffer[BUFSIZE] = {'\0'}, status[8] = {'\0'};
 	va_list list;
 
 	if (format == NULL)
@@ -19,7 +17,6 @@ int _printf(const char *format, ...)
 
 	/* initiate va_list */
 	va_start(list, format);
-
 	/* loop through all chars of format */
 	for (i = 0; format[i] != '\0'; i++)
 	{
@@ -27,8 +24,7 @@ int _printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			/* execute flow for conversion specification */
-			i++;
-			specifier((char *)format, &i, buffer, &bsize, list, &chars_printed);
+			specifier((char *)format, &i, buffer, &bsize, list, &chars_printed, status);
 		}
 		else
 		{
@@ -38,7 +34,6 @@ int _printf(const char *format, ...)
 	}
 	/* empty the buffer onto stdout */
 	dump(buffer, &bsize, &chars_printed);
-
 	va_end(list);
 	return (chars_printed);
 }
