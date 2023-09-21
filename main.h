@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <limits.h>
 
 #define BUFSIZE 1024
 

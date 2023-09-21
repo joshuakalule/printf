@@ -92,9 +92,9 @@ void binary_conversion(char *buffer, int *bsize, va_list list, char *flags,
 		int *count)
 {
 	void *_flags __attribute__((unused)) = (void *)flags;
-	unsigned long number = va_arg(list, unsigned long);
-	unsigned long num;
-	long i, c;
+	unsigned int number = va_arg(list, long);
+	unsigned int num;
+	unsigned int i, c;
 	char *binary_strnum;
 
 	if (number == 0 || number == 1)
@@ -114,7 +114,7 @@ void binary_conversion(char *buffer, int *bsize, va_list list, char *flags,
 		exit(1);
 	binary_strnum[c] = '\0';
 	num = number;
-	for (i = c - 1; i >= 0; i--)
+	for (i = c - 1; num >= 1; i--)
 	{
 		binary_strnum[i] = (num % 2) + 48;
 		num /= 2;
