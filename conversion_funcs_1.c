@@ -129,8 +129,14 @@ void pointer_conversion(char *buffer, int *bsize, va_list list, char *flags,
 {
 	void *_flags __attribute__((unused)) = (void *)flags;
 	void *pointer = va_arg(list, void *);
-	char *fstring = __hex_body_ld(87, (unsigned long)pointer);
+	char *fstring;
 
+	if (pointer == NULL)
+	{
+		append("(nil)", buffer, bsize, count);
+		return;
+	}
+	fstring = __hex_body_ld(87, (unsigned long)pointer);
 	append("0x", buffer, bsize, count);
 	append(fstring, buffer, bsize, count);
 
