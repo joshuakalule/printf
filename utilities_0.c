@@ -113,10 +113,13 @@ char *int_to_str(int number)
 		exit(1);
 	numstring[count + 1] = '\0';
 	numstring[0] = (number > 0) ? '+' : '-';
-	num = (number > 0) ? number : (-1 * number);
+	num = number;
 	for (i = count; i > 0; i--)
 	{
-		numstring[i] = (num % 10) + 48;
+		if (number < 0)
+			numstring[i] = (num % 10) * (-1) + 48;
+		else
+			numstring[i] = (num % 10) + 48;
 		num /= 10;
 	}
 	return (numstring);

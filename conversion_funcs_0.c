@@ -14,6 +14,8 @@ void character_conversion(char *buffer, int *bsize, va_list list, char *flags,
 	void *_flags __attribute__((unused)) = (void *)flags;
 	char ch = (char)va_arg(list, int);
 
+	if (ch == '\0')
+		ch = 0;
 	append_char(ch, buffer, bsize, count);
 }
 
