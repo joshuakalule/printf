@@ -13,10 +13,9 @@ char *unsigned_int_to_str(unsigned int number)
 
 	if (number == 0)
 	{
-		numstring = malloc(3);
-		numstring[0] = '+';
-		numstring[1] = '0';
-		numstring[2] = '\0';
+		numstring = malloc(2);
+		numstring[0] = '0';
+		numstring[1] = '\0';
 		return (numstring);
 	}
 
