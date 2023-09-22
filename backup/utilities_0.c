@@ -89,15 +89,17 @@ int check(char ch, char *string)
 char *int_to_str(int number)
 {
 	char *numstring;
-	int i, num, count, stop;
+	int i, num, count;
 
 	if (number == 0)
 	{
-		numstring = malloc(2);
-		numstring[0] = '0';
-		numstring[1] = '\0';
+		numstring = malloc(3);
+		numstring[0] = '+'
+		numstring[1] = '0';
+		numstring[2] = '\0';
 		return (numstring);
 	}
+
 	count = 0;
 	num = number;
 	while (num != 0)
@@ -105,26 +107,19 @@ char *int_to_str(int number)
 		num /= 10;
 		count++;
 	}
+
 	numstring = malloc(sizeof(char) * (count + 1 + 1));
 	if (!numstring)
 		exit(1);
 	numstring[count + 1] = '\0';
+	numstring[0] = (number > 0) ? '+' : '-';
 	num = number;
-	if (number > 0)
+	for (i = count; i > 0; i--)
 	{
-		numstring[count] = '\0';
-		i = count - 1;
-		stop = 0;
-	}
-	else
-	{
-		numstring[0] = '-';
-		i = count;
-		stop = 1;
-	}
-	for (; i >= stop; i--)
-	{
-		numstring[i] = (number < 0) ? (num % 10) * -1 + 48 : (num % 10) + 48;
+		if (number < 0)
+			numstring[i] = (num % 10) * (-1) + 48;
+		else
+			numstring[i] = (num % 10) + 48;
 		num /= 10;
 	}
 	return (numstring);

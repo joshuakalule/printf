@@ -11,6 +11,7 @@ for source_file in main-*.c; do
 
 		# Check if compilation was successful
 		if [ $? -eq 0 ]; then
+			echo ""
 			echo "------> Compiled $source_file successfully"
 
 			# Run the executable

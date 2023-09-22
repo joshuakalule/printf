@@ -1,6 +1,53 @@
 #include "main.h"
 
 /**
+ * remove_flag - remove a flag
+ * @ch: char to remove
+ * @flags: flags array
+ */
+void remove_flag(char ch, char *flags)
+{
+	int i;
+
+	for (i = 0; flags[i] != '\0'; i++)
+	{
+		if (flags[i] == ch)
+			break;
+	}
+
+	while (1)
+	{
+		if (flags[i + 1] == '\0')
+		{
+			flags[i] = '\0';
+			break;
+		}
+		flags[i] = flags[i + 1];
+		i++;
+	}
+}
+
+
+/**
+ * add_flag - add a flag char to the flags
+ * @ch: char to add
+ * @flags: flags array
+ */
+void add_flag(char ch, char *flags)
+{
+	int i;
+
+	for (i = 0; i < FLAG_ARRAY_SIZE; i++)
+	{
+		if (flags[i] == '\0')
+		{
+			flags[i] = ch;
+			break;
+		}
+	}
+}
+
+/**
  * handle_no_conversion - handles case when no conversion specifier is given
  * @ch: conversion char
  * @format: format string
@@ -44,9 +91,9 @@ void handle_no_conversion(char ch, char *format, int *ci, char *buffer,
 void specifier(char *format, int *ci, char *buffer, int *bsize, va_list list,
 	   int *count, char *status)
 {
-	char *flags = NULL, conversion = '\0', flag_array[] = FLAG_ARRAY;
+	char flags[FLAG_ARRAY_SIZE] = {'\0'}, conversion = '\0';
 	char length_modifier_array[] = LEN_MODIFIER_ARRAY;
-	char conversion_array[] = CONVERSION_ARRAY;
+	char conversion_array[] = CONVERSION_ARRAY, flag_array[] = FLAG_ARRAY;
 	int i;
 
 	(*ci)++;
@@ -55,8 +102,8 @@ void specifier(char *format, int *ci, char *buffer, int *bsize, va_list list,
 	{
 		if (format[*ci] == flag_array[i])
 		{
+			add_flag(format[*ci], flags);
 			(*ci)++;
-			/* ... */
 		}
 	}
 	/* length modifiers */

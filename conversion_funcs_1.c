@@ -11,37 +11,39 @@
 void octal_conversion(char *buffer, int *bsize, va_list list, char *flags,
 		int *count)
 {
-	void *_flags __attribute__((unused)) = (void *)flags;
 	unsigned int number = va_arg(list, unsigned int);
 	unsigned int i, num, c;
 	char *octal_strnum;
 
 	if (number < 8)
 	{
-		append_char(number + 48, buffer, bsize, count);
-		return;
+		octal_strnum = malloc(2);
+		octal_strnum[0] = number + 48;
+		octal_strnum[1] = '\0';
+	}
+	else
+	{
+		c = 1;
+		num = number;
+		while (num >= 8)
+		{
+			num /= 8;
+			c++;
+		}
+		octal_strnum = malloc(sizeof(char) * (c + 1));
+		if (!octal_strnum)
+			exit(1);
+		octal_strnum[c] = '\0';
+		num = number;
+		for (i = c - 1; num > 0; i--)
+		{
+			octal_strnum[i] = (num < 8) ? num + 48 : (num % 8) + 48;
+			num /= 8;
+		}
 	}
 
-	c = 1;
-	num = number;
-	while (num >= 8)
-	{
-		num /= 8;
-		c++;
-	}
-	octal_strnum = malloc(sizeof(char) * (c + 1));
-	if (!octal_strnum)
-		exit(1);
-	octal_strnum[c] = '\0';
-	num = number;
-	for (i = c - 1; num > 0; i--)
-	{
-		if (num < 8)
-			octal_strnum[i] = num + 48;
-		else
-			octal_strnum[i] = (num % 8) + 48;
-		num /= 8;
-	}
+	execute_flags('o', octal_strnum, flags);
+
 	append(octal_strnum, buffer, bsize, count);
 	free(octal_strnum);
 }
@@ -57,8 +59,9 @@ void octal_conversion(char *buffer, int *bsize, va_list list, char *flags,
 void hexadecimal_lower_conversion(char *buffer, int *bsize, va_list list,
 		char *flags, int *count)
 {
-	void *_flags __attribute__((unused)) = (void *)flags;
 	char *hex_strnum = _hexadecimal_conversion(87, list);
+
+	execute_flags('x', hex_strnum, flags);
 
 	append(hex_strnum, buffer, bsize, count);
 	free(hex_strnum);
@@ -75,8 +78,9 @@ void hexadecimal_lower_conversion(char *buffer, int *bsize, va_list list,
 void hexadecimal_upper_conversion(char *buffer, int *bsize, va_list list,
 		char *flags, int *count)
 {
-	void *_flags __attribute__((unused)) = (void *)flags;
 	char *hex_strnum = _hexadecimal_conversion(55, list);
+
+	execute_flags('X', hex_strnum, flags);
 
 	append(hex_strnum, buffer, bsize, count);
 	free(hex_strnum);

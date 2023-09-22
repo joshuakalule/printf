@@ -54,8 +54,27 @@ void decimal_conversion(char *buffer, int *bsize, va_list list, char *flags,
 {
 	int number = va_arg(list, int);
 	char *numstring = int_to_str(number);
+	int i;
 
-	execute_flags('d', numstring, flags);
+	/**
+	 * the number comes with the sign whether +ve or -ve
+	 * 0(zero) also comes as '+0'
+	 */
+	if (flags != NULL)
+	{
+		if (check(' ', flags) && number >= 0)
+			numstring[0] = ' ';
+	}
+	else
+	{
+		/* default case - remove the '+' */
+		if (number >= 0)
+		{
+			for (i = 1; numstring[i] != '\0'; i++)
+				numstring[i - 1] = numstring[i];
+			numstring[i - 1] = '\0';
+		}
+	}
 
 	append(numstring, buffer, bsize, count);
 	free(numstring);

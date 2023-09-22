@@ -20,6 +20,18 @@
 #define CONVERSION_ARRAY \
 {'c', 's', '%', 'd', 'i', 'b', 'u', 'o', 'x', 'X', 'S', 'p'}
 
+#define HASH_CONVERSIONS_SIZE 3
+#define HASH_CONVERSIONS \
+{'o', 'x', 'X'}
+
+#define SPACE_CONVERSIONS_SIZE 2
+#define SPACE_CONVERSIONS \
+{'d', 'i'}
+
+#define PLUS_CONVERSIONS_SIZE 2
+#define PLUS_CONVERSIONS \
+{'d', 'i'}
+
 /**
  * struct conversion_s - simplify the conversion if statement
  * @ch: conversion character
@@ -36,6 +48,7 @@ typedef struct conversion_s
 int _printf(const char *format, ...);
 void specifier(char *, int *, char *, int *, va_list, int *, char *);
 void run_conversion(char, char *, int *, va_list, char *, int *);
+void execute_flags(char ch, char *strnum, char *flags);
 
 /* utility methods */
 void dump(char buffer[], int *buffer_size, int *count);
@@ -74,5 +87,9 @@ void custom_string_conversion(char *buffer, int *bsize, va_list list,
 void pointer_conversion(char *buffer, int *bsize, va_list list, char *flags,
 		int *count);
 
+/* flag methods */
+void hash_flag(char conversion, char *strnum);
+void space_flag(char conversion, char *strnum);
+void plus_flag(char conversion, char *strnum);
 
 #endif
