@@ -55,7 +55,6 @@ void decimal_conversion(char *buffer, int *bsize, va_list list, char *flags,
 	int number = va_arg(list, int);
 	char *numstring = int_to_str(number);
 
-	printf("number: %d\n", number);
 	execute_flags('d', numstring, flags);
 
 	append(numstring, buffer, bsize, count);
