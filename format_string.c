@@ -37,6 +37,9 @@ void add_flag(char ch, char *flags)
 {
 	int i;
 
+	if (check(ch, flags))
+		return;
+
 	for (i = 0; i < FLAG_ARRAY_SIZE; i++)
 	{
 		if (flags[i] == '\0')
@@ -45,6 +48,12 @@ void add_flag(char ch, char *flags)
 			break;
 		}
 	}
+
+	if ((ch == '-' && check('0', flags)) || (ch == '0' && check('-', flags)))
+		remove_flag('0', flags);
+
+	if ((ch == '+' && check(' ', flags)) || (ch == ' ' && check('+', flags)))
+		remove_flag(' ', flags);
 }
 
 /**
@@ -104,6 +113,7 @@ void specifier(char *format, int *ci, char *buffer, int *bsize, va_list list,
 		{
 			add_flag(format[*ci], flags);
 			(*ci)++;
+			i = -1;
 		}
 	}
 	/* length modifiers */
@@ -125,8 +135,7 @@ void specifier(char *format, int *ci, char *buffer, int *bsize, va_list list,
 	}
 	handle_no_conversion(conversion, format, ci, buffer, bsize, count, status);
 	run_conversion(conversion, buffer, bsize, list, flags, count);
-	/**
-	 * printf("flags: [%s], length modifier: [%s], conversion: [%c]\n\n",
-	 *		flags, length_modifier, conversion);
-	 */
+
+	printf("flags: [%s], conversion: [%c]\n\n",
+			flags, conversion);
 }
