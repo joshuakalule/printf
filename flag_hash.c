@@ -59,6 +59,9 @@ void hash_hex_flag(char ch, char *strnum)
  */
 void hash_flag(char conversion, char *strnum)
 {
+	if (strnum[0] == '0' && strnum[1] == '\0')
+		return;
+
 	if (conversion == 'o')
 	{
 		hash_oct_flag(strnum);
