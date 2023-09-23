@@ -136,6 +136,8 @@ void specifier(char *format, int *ci, char *buffer, int *bsize, va_list list,
 	handle_no_conversion(conversion, format, ci, buffer, bsize, count, status);
 	run_conversion(conversion, buffer, bsize, list, flags, count);
 
-	printf("flags: [%s], conversion: [%c]\n\n",
-			flags, conversion);
+	/**
+	 * printf("flags: [%s], conversion: [%c]\n\n",
+	 *	flags, conversion);
+	 */
 }
